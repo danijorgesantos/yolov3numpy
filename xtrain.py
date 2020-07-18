@@ -1,61 +1,98 @@
 
-import cv2
-import numpy as np
-from butils import *
-
+import argparse
 import gzip
-
+import pickle
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
 from PIL import Image
+from tqdm import tqdm
 
-def extract_data(filename, num_images, IMAGE_WIDTH):
-    '''
-    Extract images by reading the file bytestream. Reshape the read values into a 3D matrix of dimensions [m, h, w], where m 
-    is the number of training examples.
-    '''
-    print('Extracting', filename)
-    with gzip.open(filename) as bytestream:
-        bytestream.read(16)
-        buf = bytestream.read(IMAGE_WIDTH * IMAGE_WIDTH * num_images)
-        data = np.frombuffer(buf, dtype=np.uint8).astype(np.float32)
-        data = data.reshape(num_images, IMAGE_WIDTH*IMAGE_WIDTH)
-        print(data[0])
-        return data
+from butils import *
+from bforward import *
 
 
-def extract_labels(filename, num_images):
-    '''
-    Extract label into vector of integer values of dimensions [m, 1], where m is the number of images.
-    '''
-    print('Extracting', filename)
-    with gzip.open(filename) as bytestream:
-        bytestream.read(8)
-        buf = bytestream.read(1 * num_images)
-        labels = np.frombuffer(buf, dtype=np.uint8).astype(np.int64)
-    return labels
 
-# Get test data
-m =10000
-X = extract_data('t10k-images-idx3-ubyte.gz', m, 28)
-y_dash = extract_labels('t10k-labels-idx1-ubyte.gz', m).reshape(m,1)
+
+## Initializing all the parameters, filters, weights ---------------------------------------------------------------------------------------------------
+
+num_classes = 10
+lr = 0.01
+beta1 = 0.95
+beta2 = 0.99
+img_dim = 28
+img_depth = 1
+f = 5
+num_filt1 = 8
+num_filt2 = 8
+batch_size = 32
+num_epochs = 2
+save_path = 'params.pkl'
+
+conv_s = 1
+
+f1, f2, w3, w4 = (num_filt1 ,img_depth,f,f), (num_filt2 ,num_filt1,f,f), (128,800), (10, 128)
+
+f1 = initializeFilter(f1)
+f2 = initializeFilter(f2)
+w3 = initializeWeight(w3)
+w4 = initializeWeight(w4)
+
+b1 = np.zeros((f1.shape[0],1))
+b2 = np.zeros((f2.shape[0],1))
+b3 = np.zeros((w3.shape[0],1))
+b4 = np.zeros((w4.shape[0],1))
+
+params = [f1, f2, w3, w4, b1, b2, b3, b4]
+
+cost = []
+
+# Get test data -------------------------------------------------------------------------------------------------------------------------------------------
+
+m = 2
+X = extract_data('sample.tar', m, 28)
+#y_dash = extract_labels('t10k-labels-idx1-ubyte.gz', m).reshape(m,1)
+y_dash = [[1],[2]]
 # Normalize the data
 X-= int(np.mean(X)) # subtract mean
 X/= int(np.std(X)) # divide by standard deviation
 test_data = np.hstack((X,y_dash))
 
-
-
-# X = test_data[:,0:-1]
-# X = X.reshape(len(test_data), 1, 28, 28)
+X = test_data[:,0:-1]
+X = X.reshape(len(test_data), 1, 28, 28)
 # y = test_data[:,-1]
 
-# corr = 0
-# digit_count = [0 for i in range(10)]
-# digit_correct = [0 for i in range(10)]
+corr = 0
+digit_count = [0 for i in range(10)]
+digit_correct = [0 for i in range(10)]
 
-# print()
-# print("Computing accuracy over test set:")
+t = tqdm(range(len(X)), leave=True)
 
-# t = tqdm(range(len(X)), leave=True)
+for i in t:
+    x = X[i]
+    conv1 = convolution(x, f1, b1, conv_s) # convolution operation
+    conv1[conv1<=0] = 0 #relu activation
+
+
+    # conv2 = convolution(conv1, f2, b2, conv_s) # second convolution operation
+    # conv2[conv2<=0] = 0 # pass through ReLU non-linearity
+    # pooled = maxpool(conv2, pool_f, pool_s) # maxpooling operation
+    # (nf2, dim2, _) = pooled.shape
+    # fc = pooled.reshape((nf2 * dim2 * dim2, 1)) # flatten pooled layer
+    # z = w3.dot(fc) + b3 # first dense layer
+    # z[z<=0] = 0 # pass through ReLU non-linearity
+    
+# out = w4.dot(z) + b4 # second dense layer
+# probs = softmax(out) # predict class probabilities with the softmax activation function
+
+# digit_count[int(y[i])]+=1
+# if pred==y[i]:
+#     corr+=1
+#     digit_correct[pred]+=1
+
+t.set_description("Acc:%0.2f%%" % (float(corr/(i+1))*100))
+
+print(t)
 
 
 
@@ -187,5 +224,3 @@ test_data = np.hstack((X,y_dash))
 # cv2.imshow(window_name, image)  
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
-
-
