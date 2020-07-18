@@ -1,21 +1,7 @@
 import numpy as np
-import cv2
-from butils import *
-from tqdm import tqdm
-import argparse
-import matplotlib.pyplot as plt
-import pickle
-
 import gzip
 
 from PIL import Image
-
-def initializeFilter(size, scale = 1.0):
-    stddev = scale/np.sqrt(np.prod(size))
-    return np.random.normal(loc = 0, scale = stddev, size = size)
-
-def initializeWeight(size):
-    return np.random.standard_normal(size=size) * 0.01
 
 def extract_data(filename, num_images, IMAGE_WIDTH):
     '''
@@ -28,9 +14,9 @@ def extract_data(filename, num_images, IMAGE_WIDTH):
         buf = bytestream.read(IMAGE_WIDTH * IMAGE_WIDTH * num_images)
         data = np.frombuffer(buf, dtype=np.uint8).astype(np.float32)
         data = data.reshape(num_images, IMAGE_WIDTH*IMAGE_WIDTH)
-        print(data[0])
+        # image = Image.fromarray(data)
+        # image.show()
         return data
-
 
 def extract_labels(filename, num_images):
     '''
@@ -41,4 +27,19 @@ def extract_labels(filename, num_images):
         bytestream.read(8)
         buf = bytestream.read(1 * num_images)
         labels = np.frombuffer(buf, dtype=np.uint8).astype(np.int64)
+        print(labels[2])
     return labels
+
+def initializeFilter(size, scale = 1.0):
+    stddev = scale/np.sqrt(np.prod(size))
+    return np.random.normal(loc = 0, scale = stddev, size = size)
+
+def initializeWeight(size):
+    return np.random.standard_normal(size=size) * 0.01
+
+def nanargmax(arr):
+    idx = np.nanargmax(arr)
+    idxs = np.unravel_index(idx, arr.shape)
+    return idxs    
+
+    
