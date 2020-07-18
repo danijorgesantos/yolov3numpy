@@ -6,6 +6,26 @@ from butils import *
 import gzip
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def extract_data(filename, num_images, IMAGE_WIDTH):
     '''
     Extract images by reading the file bytestream. Reshape the read values into a 3D matrix of dimensions [m, h, w], where m 
@@ -34,7 +54,7 @@ def extract_labels(filename, num_images):
 
 
 # Get test data
-m =10000
+m = 10000
 X = extract_data('t10k-images-idx3-ubyte.gz', m, 28)
 
 # Normalize the data
