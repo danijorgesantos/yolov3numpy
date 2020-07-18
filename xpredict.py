@@ -84,6 +84,20 @@ print(y)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Python program to explain cv2.rectangle() method  
    
 # Reading an image in default mode 
