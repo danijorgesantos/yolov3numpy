@@ -3,6 +3,7 @@ import gzip
 import pickle
 from os import listdir
 from os.path import isfile, join
+import skimage.measure
 
 import cv2
 import matplotlib.pyplot as plt
@@ -55,21 +56,23 @@ num_filt2 = 8
 batch_size = 32
 num_epochs = 2
 
-f1, f2, w3, w4 = (num_filt1 ,img_depth,f,f), (num_filt2 ,num_filt1,f,f), (128,800), (10, 128)
+pool_f = 2
+pool_s = 2
 
 #filters
-f1 = initializeFilter(f1)
-f2 = initializeFilter(f2)
+f1 = initializeFilter(25).reshape(5,5)
+f2 = initializeFilter(25).reshape(5,5)
+f3 = initializeFilter(25).reshape(5,5)
 
 #weights
-w3 = initializeWeight(w3)
-w4 = initializeWeight(w4)
+# w3 = initializeWeight(w3)
+# w4 = initializeWeight(w4)
 
 #bias
 b1 = np.zeros((f1.shape[0],1))
-b2 = np.zeros((f2.shape[0],1))
-b3 = np.zeros((w3.shape[0],1))
-b4 = np.zeros((w4.shape[0],1))
+# b2 = np.zeros((f2.shape[0],1))
+# b3 = np.zeros((w3.shape[0],1))
+# b4 = np.zeros((w4.shape[0],1))
 
 
 # print(f1.shape)
@@ -90,28 +93,55 @@ for image in t:
     Make predictions with trained filters/weights. 
     '''
 
-    conv1 = convolution(image, f1, b1, conv_s) # convolution operation
+    # convolution operation
+    conv1 = cv2.filter2D(image,-1,f1)
     conv1[conv1<=0] = 0 #relu activation
 
+    #show img
+    cv2.imshow("some window", conv1)
+    cv2.waitKey(0)
 
+    # maxpooling operation
+    pooled = skimage.measure.block_reduce(conv1, (2,2), np.max) 
 
+    #show img
+    cv2.imshow("some window", pooled)
+    cv2.waitKey(0)
 
+    # convolution operation 2
+    conv2 = cv2.filter2D(pooled,-1,f2)
+    conv2[conv2<=0] = 0 #relu activation
 
+    #show img
+    cv2.imshow("some window", conv2)
+    cv2.waitKey(0)
 
+    # maxpooling operation
+    pooled2 = skimage.measure.block_reduce(conv2, (2,2), np.max) 
 
+    #show img
+    cv2.imshow("some window", pooled2)
+    cv2.waitKey(0)
 
+    # convolution operation 3
+    conv3 = cv2.filter2D(pooled2,-1,f3)
+    conv3[conv3<=0] = 0 #relu activation
 
+    #show img
+    cv2.imshow("some window", conv3)
+    cv2.waitKey(0)
 
+    # maxpooling operation
+    pooled3 = skimage.measure.block_reduce(conv3, (2,2), np.max) 
 
-
-
-
-
-
-
-
+    #show img
+    cv2.imshow("some window", pooled3)
+    cv2.waitKey(0)
 
 
 
     
+
+
+
     t.set_description("Gen nº %i")

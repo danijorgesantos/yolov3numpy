@@ -41,9 +41,9 @@ for i in range(int(w_img/3)):
 print(sectionArray)
 print(f1)
 
-square = []
-for i in range(len(sectionArray)):
-    square.append(np.multiply(sectionArray, f1))
+# square = []
+# for i in range(len(sectionArray)):
+#     square.append(np.multiply(sectionArray, f1))
 
 print(square)
 
@@ -53,20 +53,6 @@ cv2.imshow("s", imgUint8)
 cv2.waitKey(0)
 
 
-
-
-
-array = []
-array2= []
-
-array.append(img)
-
-#print(array)
-
-for i in range(rows):
-    for j in range(cols):
-        k = img[i,j]
-        array2.append(k)
 
 
 # hello = np.array(array2).reshape(464,696)
