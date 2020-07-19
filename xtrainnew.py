@@ -63,23 +63,19 @@ pool_s = 2
 f1 = initializeFilter(25).reshape(5,5)
 f2 = initializeFilter(25).reshape(5,5)
 f3 = initializeFilter(25).reshape(5,5)
+f4 = initializeFilter(25).reshape(5,5)
+f5 = initializeFilter(25).reshape(5,5)
+f6 = initializeFilter(25).reshape(5,5)
 
 #weights
-# w3 = initializeWeight(w3)
-# w4 = initializeWeight(w4)
+w3 = initializeWeight(275)
+w4 = initializeWeight(275)
 
 #bias
 b1 = np.zeros((f1.shape[0],1))
-# b2 = np.zeros((f2.shape[0],1))
-# b3 = np.zeros((w3.shape[0],1))
-# b4 = np.zeros((w4.shape[0],1))
-
-
-# print(f1.shape)
-# print(f2)
-
-
-
+b2 = np.zeros((f2.shape[0],1))
+b3 = np.zeros((w3.shape[0],1))
+b4 = np.zeros((w4.shape[0],1))
 
 
 print('-------------------------------------------------------------')
@@ -97,57 +93,105 @@ for image in t:
     conv1 = cv2.filter2D(image,-1,f1)
     conv1[conv1<=0] = 0 #relu activation
 
-    #show img
-    cv2.imshow("some window", conv1)
-    cv2.waitKey(0)
+    # #show img
+    # cv2.imshow("some window", conv1)
+    # cv2.waitKey(0)
 
     # maxpooling operation
     pooled = skimage.measure.block_reduce(conv1, (2,2), np.max) 
 
-    #show img
-    cv2.imshow("some window", pooled)
-    cv2.waitKey(0)
+    # #show img
+    # cv2.imshow("some window", pooled)
+    # cv2.waitKey(0)
 
     # convolution operation 2
     conv2 = cv2.filter2D(pooled,-1,f2)
     conv2[conv2<=0] = 0 #relu activation
 
-    #show img
-    cv2.imshow("some window", conv2)
-    cv2.waitKey(0)
+    # #show img
+    # cv2.imshow("some window", conv2)
+    # cv2.waitKey(0)
 
     # maxpooling operation
     pooled2 = skimage.measure.block_reduce(conv2, (2,2), np.max) 
 
-    #show img
-    cv2.imshow("some window", pooled2)
-    cv2.waitKey(0)
+    # #show img
+    # cv2.imshow("some window", pooled2)
+    # cv2.waitKey(0)
 
     # convolution operation 3
     conv3 = cv2.filter2D(pooled2,-1,f3)
     conv3[conv3<=0] = 0 #relu activation
 
-    #show img
-    cv2.imshow("some window", conv3)
-    cv2.waitKey(0)
+    # #show img
+    # cv2.imshow("some window", conv3)
+    # cv2.waitKey(0)
 
     # maxpooling operation
     pooled3 = skimage.measure.block_reduce(conv3, (2,2), np.max) 
 
-    #show img
-    cv2.imshow("some window", pooled3)
-    cv2.waitKey(0)
+    # #show img
+    # cv2.imshow("some window", pooled3)
+    # cv2.waitKey(0)
+
+    # convolution operation 4
+    conv4 = cv2.filter2D(pooled3,-1,f4)
+    conv4[conv4<=0] = 0 #relu activation
+
+    # #show img
+    # cv2.imshow("some window", conv4)
+    # cv2.waitKey(0)
+
+    # maxpooling operation
+    pooled4 = skimage.measure.block_reduce(conv4, (2,2), np.max) 
+
+    # #show img
+    # cv2.imshow("some window", pooled4)
+    # cv2.waitKey(0)
+
+    # convolution operation 5
+    conv5 = cv2.filter2D(pooled4,-1,f5)
+    conv5[conv5<=0] = 0 #relu activation
+
+    # #show img
+    # cv2.imshow("some window", conv5)
+    # cv2.waitKey(0)
+
+    # maxpooling operation
+    pooled5 = skimage.measure.block_reduce(conv5, (2,2), np.max) 
+
+    # #show img
+    # cv2.imshow("some window", pooled5)
+    # cv2.waitKey(0)
+
+    # convolution operation 6
+    conv6 = cv2.filter2D(pooled5,-1,f6)
+    conv6[conv6<=0] = 0 #relu activation
+
+    # #show img
+    # cv2.imshow("some window", conv6)
+    # cv2.waitKey(0)
+
+    # maxpooling operation
+    pooled6 = skimage.measure.block_reduce(conv6, (2,2), np.max) 
+
+    # #show img
+    # cv2.imshow("some window", pooled6)
+    # cv2.waitKey(0)
+    
+    # flaten pooled6
+    (nf2, dim2) = pooled6.shape
+    fc = pooled6.reshape((nf2 * dim2, 1)) # flatten pooled layer
+
+    z = w3.dot(fc) + b3 # first dense layer
+    z[z<=0] = 0 # pass through ReLU non-linearity
+    
+    out = w4.dot(z) + b4 # second dense layer
+    probs = softmax(out) # predict class probabilities with the softmax activation function
 
 
-
-
-
-
-
-
-
-
-
+    bla = np.argmax(probs)
+    bla2 = np.max(probs)
 
 
 
