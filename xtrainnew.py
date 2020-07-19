@@ -32,7 +32,6 @@ for img in tqdm(onlyfiles):
     # im = image
 
     im = Image.open( join(mypath, img), "r")
-    print(im.shape) 
     pix_val = list(im.getdata())
     pix_val_flat = [x for sets in pix_val for x in sets]
     imgArray.append(pix_val_flat)
