@@ -140,8 +140,17 @@ for image in t:
 
 
 
-    
 
 
 
+
+
+
+
+
+
+
+
+
+    # description for the for loop
     t.set_description("Gen nº %i")
