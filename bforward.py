@@ -7,8 +7,8 @@ def convolution(image, filt, bias, s=1):
     Confolves `filt` over `image` using stride `s`
     '''
 
-    a = np.array(image).reshape(464,696)
-    print(a)
+    # a = np.array(image).reshape(464,696)
+    # print(a)
 
 def maxpool(image, f=2, s=2):
     '''

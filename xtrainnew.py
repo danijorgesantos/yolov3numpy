@@ -31,10 +31,14 @@ for img in tqdm(onlyfiles):
     # image = plt.imread(img)
     # im = image
 
-    im = Image.open( join(mypath, img), "r")
-    pix_val = list(im.getdata())
-    pix_val_flat = [x for sets in pix_val for x in sets]
-    imgArray.append(pix_val_flat)
+    # im = Image.open( join(mypath, img), "r")
+    # pix_val = list(im.getdata())
+    # pix_val_flat = [x for sets in pix_val for x in sets]
+
+    image = cv2.imread(join(mypath, img),0)
+    imgArray.append(image)
+
+print(imgArray)
 
 print('-------------------------------------------------------------')
 print('Step 2. ----- all labels in the array and ready to use *')
@@ -78,8 +82,8 @@ b3 = np.zeros((w3.shape[0],1))
 b4 = np.zeros((w4.shape[0],1))
 
 
-print(f1.shape)
-print(f2)
+# print(f1.shape)
+# print(f2)
 
 
 
