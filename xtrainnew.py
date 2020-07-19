@@ -27,18 +27,8 @@ print('Step 1. ----- all images in the array and ready to use *')
 imgArray = []
 
 for img in tqdm(onlyfiles):
-
-    # image = plt.imread(img)
-    # im = image
-
-    # im = Image.open( join(mypath, img), "r")
-    # pix_val = list(im.getdata())
-    # pix_val_flat = [x for sets in pix_val for x in sets]
-
     image = cv2.imread(join(mypath, img),0)
     imgArray.append(image)
-
-print(imgArray)
 
 print('-------------------------------------------------------------')
 print('Step 2. ----- all labels in the array and ready to use *')
