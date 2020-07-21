@@ -33,6 +33,11 @@ layer2Result = (x * (1/(1 + np.exp(beta * -x))))
 # feed foward layer 2 with activation function softmax for final layer
 
 
+
+
+
+
+
 print('----------------------------')
 print('layer 2 result --> ', layer2Result)
 
