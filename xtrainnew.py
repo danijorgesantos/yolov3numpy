@@ -67,15 +67,24 @@ f4 = initializeFilter(25).reshape(5,5)
 f5 = initializeFilter(25).reshape(5,5)
 f6 = initializeFilter(25).reshape(5,5)
 
-#weights
+#weights cnn
 w3 = initializeWeight(275)
 w4 = initializeWeight(275)
 
-#bias
+
+#weights fc
+fcw1 = initializeWeight()
+fcw2 = initializeWeight()
+
+#bias cnn
 b1 = np.zeros((f1.shape[0],1))
 b2 = np.zeros((f2.shape[0],1))
 b3 = np.zeros((w3.shape[0],1))
 b4 = np.zeros((w4.shape[0],1))
+
+#bias fc
+fcb1 = np.zeros((f1.shape[0],1))
+fcb2 = np.zeros((f2.shape[0],1))
 
 
 print('-------------------------------------------------------------')
@@ -83,6 +92,60 @@ print('Step 4. ----- do the foward propagation --> convolutions, and pooling *')
 
 
 t = tqdm(imgArray, leave=True)
+
+
+
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+
+class NeuralNetwork:
+    def __init__(self, x, y):
+        self.input      = x
+
+        self.weights1   = np.random.rand(self.input.shape[1],4) 
+        self.weights2   = np.random.rand(4,1)                 
+        self.y          = y
+        self.output     = np.zeros(self.y.shape)
+
+    def feedforward(self):
+
+        self.layer1 = sigmoid(np.dot(self.input, self.weights1)+b1)
+        
+        self.output = sigmoid(np.dot(self.layer1, self.weights2)+b2)
+
+
+
+        # swish
+
+        # (x * (1/(1 + np.exp(beta * -x)))) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#---------------------------------------------------------------------------------------------------------------------------------------
 
 for image in t:
     '''
@@ -100,7 +163,7 @@ for image in t:
     # maxpooling operation
     pooled = skimage.measure.block_reduce(conv1, (2,2), np.max) 
 
-    # #show img
+    # # show img
     # cv2.imshow("some window", pooled)
     # cv2.waitKey(0)
 
@@ -123,7 +186,7 @@ for image in t:
     conv3 = cv2.filter2D(pooled2,-1,f3)
     conv3[conv3<=0] = 0 #relu activation
 
-    # #show img
+    # # show img
     # cv2.imshow("some window", conv3)
     # cv2.waitKey(0)
 
@@ -183,15 +246,13 @@ for image in t:
     (nf2, dim2) = pooled6.shape
     fc = pooled6.reshape((nf2 * dim2, 1)) # flatten pooled layer
 
-    z = w3.dot(fc) + b3 # first dense layer
-    z[z<=0] = 0 # pass through ReLU non-linearity
-    
-    out = w4.dot(z) + b4 # second dense layer
-    probs = softmax(out) # predict class probabilities with the softmax activation function
 
 
-    bla = np.argmax(probs)
-    bla2 = np.max(probs)
+
+
+
+
+
 
 
 

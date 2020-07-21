@@ -1,17 +1,38 @@
 import numpy as np
-import cv2
 
-#read image
-img_src = cv2.imread('mer.png')
+# input layer
+input = np.array([[1, 2, 3, 4]])
 
-def initializeFilter(size, scale = 1.0):
-    stddev = scale/np.sqrt(np.prod(size))
-    return np.random.normal(loc = 0, scale = stddev, size = size)
+# initialize bias, betas and wieghts --------------
+b1 = 2
+b2 = 1
 
-f1 = initializeFilter(25).reshape(5,5)
+beta2 = 1
+beta = 1
 
-#filter the source image
-img_rst = cv2.filter2D(img_src,-1,f1)
+fcweighs1 = np.random.rand(input.shape[1],16)
 
-#save result image
-cv2.imwrite('result.jpg',img_rst)
+# --------------------------------------------------
+
+print('--------------------')
+print('wights',fcweighs1)
+
+# feed foward layer 1 with activation function swish
+x = np.dot(input, fcweighs1)+b1
+layer1Result = (x * (1/(1 + np.exp(beta * -x))))
+
+print('----------------------------')
+print('layer 1 result --> ', layer1Result)
+
+fcweighs2 = np.random.rand(layer1Result.shape[1],16) 
+
+# feed foward layer 2 with activation function swish
+x = np.dot(layer1Result, fcweighs2)+b1
+layer2Result = (x * (1/(1 + np.exp(beta * -x))))
+
+# feed foward layer 2 with activation function softmax for final layer
+
+
+print('----------------------------')
+print('layer 2 result --> ', layer2Result)
+
