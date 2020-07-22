@@ -24,7 +24,7 @@ layer1Result = (x * (1/(1 + np.exp(beta * -x))))
 # print('----------------------------')
 # print('layer 1 result --> ', layer1Result)
 
-fcweighs2 = np.random.rand(layer1Result.shape[1],4) 
+fcweighs2 = np.random.rand(layer1Result.shape[1],2) 
 
 # feed foward layer 2 with activation function swish
 x = np.dot(layer1Result, fcweighs2)+b1
@@ -40,5 +40,12 @@ def softmax(x):
     return np.exp(x) / np.sum(np.exp(x), axis=0) 
 
 final = softmax(layer2Result[0])
+
+# compute the cost, with y_label and final ------ chain rule
+
+
+
+
+
 
 print(final)
