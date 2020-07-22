@@ -43,9 +43,4 @@ final = softmax(layer2Result[0])
 
 # compute the cost, with y_label and final ------ chain rule
 
-
-
-
-
-
 print(final)

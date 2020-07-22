@@ -71,11 +71,6 @@ f6 = initializeFilter(25).reshape(5,5)
 w3 = initializeWeight(275)
 w4 = initializeWeight(275)
 
-
-#weights fc
-fcw1 = initializeWeight()
-fcw2 = initializeWeight()
-
 #bias cnn
 b1 = np.zeros((f1.shape[0],1))
 b2 = np.zeros((f2.shape[0],1))
@@ -200,7 +195,7 @@ for image in t:
     fc = pooled6.reshape((nf2 * dim2, 1)) # flatten pooled layer
 
 
-
+    print('fc shape', fc.shape)
 
 
 
