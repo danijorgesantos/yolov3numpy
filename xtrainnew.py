@@ -95,11 +95,19 @@ t = tqdm(imgArray, leave=True)
 
 #---------------------------------------------------------------------------------------------------------------------------------------
 
+# -->  y label is [1,0] if it is a car and [0,1] if it is not a car
+
+y_label = np.array(([1,0], [0,1], [0,1], [1,0]), dtype = float)
+
+resultsArray = []
+
+# ---> loop
+
 for image in t:
     '''
     Make predictions with trained filters/weights. 
     '''
-    print(image.shape)
+    print('image.shape',image.shape)
 
     # convolution operation
     conv1 = cv2.filter2D(image,-1,f1)
@@ -195,10 +203,10 @@ for image in t:
     (nf2, dim2) = pooled6.shape
     fc = pooled6.reshape((1, nf2*dim2)) # flatten pooled layer
 
-    print('----pooled6',pooled6.shape)
-    print('----pooled6',pooled6)
-    print('fc shape', fc.shape)
-    print('fc widthout shape', fc)
+    # print('----pooled6',pooled6.shape)
+    # print('----pooled6',pooled6)
+    # print('fc shape', fc.shape)
+    # print('fc widthout shape', fc)
 
 
     # input layer
@@ -211,8 +219,6 @@ for image in t:
     
     beta2 = 1
     beta = 1
-
-    print(fc.shape)
     
     fcweighs1 = np.random.rand(input.shape[1],16)
     
@@ -244,14 +250,8 @@ for image in t:
         return np.exp(x) / np.sum(np.exp(x), axis=0) 
     
     final = softmax(layer2Result[0])
-    
-    # compute the cost, with y_label and final ------ chain rule
 
-
-
-    
-    
-    print(final)
+    resultsArray.append(final)
 
 
 
@@ -263,3 +263,18 @@ for image in t:
 
     # description for the for loop
     t.set_description("Gen nº %i")
+
+# join results and predictions
+print('result', resultsArray)
+print('y_label',y_label)
+
+joined = np.column_stack((resultsArray, y_label))
+
+print(joined)
+
+
+
+
+
+
+# compute the cost, with y_label and final ------ chain rule
