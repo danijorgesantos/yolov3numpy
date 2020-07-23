@@ -271,14 +271,5 @@ print(joined)
 
 # ------------  compute the cost, with y_label and final ------ chain rule
 
-# error in the output
-
-# delta
-
-# error: how much our hidden Layer weights contribute to output error
-
-# applaying derivative of swish to error
-
-# adjust first wights
-
-# adjust second weights
+# derivative of the swish function   dy/dx = (e-x(x + 1) + 1)/(1+e-x)2
+# derivative of the swish function in python  --> (np.exp(-x)(x+1 + 1))/(1 + np.exp(-x))2
