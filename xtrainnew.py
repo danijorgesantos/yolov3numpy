@@ -99,6 +99,7 @@ for image in t:
     '''
     Make predictions with trained filters/weights. 
     '''
+    print(image.shape)
 
     # convolution operation
     conv1 = cv2.filter2D(image,-1,f1)
@@ -192,10 +193,65 @@ for image in t:
     
     # flaten pooled6
     (nf2, dim2) = pooled6.shape
-    fc = pooled6.reshape((nf2 * dim2, 1)) # flatten pooled layer
+    fc = pooled6.reshape((1, nf2*dim2)) # flatten pooled layer
 
-
+    print('----pooled6',pooled6.shape)
+    print('----pooled6',pooled6)
     print('fc shape', fc.shape)
+    print('fc widthout shape', fc)
+
+
+    # input layer
+
+    input = np.array(fc)
+    
+    # initialize bias, betas and wieghts --------------
+    b1 = 2
+    b2 = 1
+    
+    beta2 = 1
+    beta = 1
+
+    print(fc.shape)
+    
+    fcweighs1 = np.random.rand(input.shape[1],16)
+    
+    # --------------------------------------------------
+    
+    # print('--------------------')
+    # print('wights',fcweighs1)
+    
+    # feed foward layer 1 with activation function swish
+    x = np.dot(input, fcweighs1)+b1
+    layer1Result = (x * (1/(1 + np.exp(beta * -x))))
+    
+    # print('----------------------------')
+    # print('layer 1 result --> ', layer1Result)
+    
+    fcweighs2 = np.random.rand(layer1Result.shape[1],2) 
+    
+    # feed foward layer 2 with activation function swish
+    x = np.dot(layer1Result, fcweighs2)+b1
+    layer2Result = (x * (1/(1 + np.exp(beta * -x))))
+    
+    # print('----------------------------')
+    # print('layer 2 result --> ', layer2Result)
+    
+    # feed foward layer 2 with activation function softmax for final layer
+    
+    def softmax(x):
+        """Compute softmax values for each sets of scores in x."""
+        return np.exp(x) / np.sum(np.exp(x), axis=0) 
+    
+    final = softmax(layer2Result[0])
+    
+    # compute the cost, with y_label and final ------ chain rule
+
+
+
+    
+    
+    print(final)
 
 
 
