@@ -253,14 +253,6 @@ for image in t:
 
     resultsArray.append(final)
 
-
-
-
-
-
-
-
-
     # description for the for loop
     t.set_description("Gen nº %i")
 
@@ -277,4 +269,16 @@ print(joined)
 
 
 
-# compute the cost, with y_label and final ------ chain rule
+# ------------  compute the cost, with y_label and final ------ chain rule
+
+# error in the output
+
+# delta
+
+# error: how much our hidden Layer weights contribute to output error
+
+# applaying derivative of swish to error
+
+# adjust first wights
+
+# adjust second weights
