@@ -260,11 +260,9 @@ for image in t:
 print('result', resultsArray)
 print('y_label',y_label)
 
-joined = np.column_stack((resultsArray, y_label))
+# calculate the cost of the function
 
-print(joined)
-
-
+# cost function cross-entropy
 
 
 
@@ -272,4 +270,11 @@ print(joined)
 # ------------  compute the cost, with y_label and final ------ chain rule
 
 # derivative of the swish function   dy/dx = (e-x(x + 1) + 1)/(1+e-x)2
-# derivative of the swish function in python  --> (np.exp(-x)(x+1 + 1))/(1 + np.exp(-x))2
+# derivative of the swish function in python  --> (np.exp(-x)(x+1)+1)/(1 + np.exp(-x))2  
+
+# calculates the derivative of the swish fucntion
+def transfer_derivative_swish(x):
+    return (np.exp(-x)*(x+1)+1)/(1 + np.exp(-x))*2  
+
+# neural nets are composite functions
+
