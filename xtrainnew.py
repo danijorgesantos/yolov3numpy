@@ -250,6 +250,12 @@ for image in t:
         return np.exp(x) / np.sum(np.exp(x), axis=0) 
     
     final = softmax(layer2Result[0])
+    print(final)
+
+
+
+
+    
 
     resultsArray.append(final)
 
@@ -257,12 +263,26 @@ for image in t:
     t.set_description("Gen nº %i")
 
 # join results and predictions
-print('result', resultsArray)
-print('y_label',y_label)
+# print('result', resultsArray)
+# print('y_label',y_label)
 
 # calculate the cost of the function
 
-# cost function cross-entropy
+#get error value
+
+# Given values 
+Y_true = y_label[0] # Y_true = Y (original values) 
+
+print('Y_true', Y_true)
+  
+# Calculated values 
+Y_pred = resultsArray[0]  # Y_pred = Y' 
+
+print('resultsArray', Y_pred)
+  
+# Mean Squared Error 
+MSE = np.square(np.subtract(Y_true,Y_pred)).mean() 
+print('MSE',MSE)
 
 
 
